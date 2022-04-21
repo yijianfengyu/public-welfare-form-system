@@ -1,0 +1,150 @@
+{
+  "schema": {
+    "col_data1": {
+      "title": "城市",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data1",
+      "contactType": "address",
+      "value": ""
+    },
+    "col_data2": {
+      "title": "机构名称",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data2",
+      "contactType": "organizationNames",
+      "value": ""
+    },
+    "col_data3": {
+      "title": "姓名",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data3",
+      "placeholder": "",
+      "contactType": "name",
+      "value": ""
+    },
+    "col_data4": {
+      "title": "电话",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data4",
+      "contactType": "tel",
+      "value": ""
+    },
+    "col_data5": {
+      "title": "邮箱",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data5",
+      "contactType": "email",
+      "value": ""
+    },
+    "col_data6": {
+      "title": "微信号",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data6",
+      "contactType": "wechat",
+      "value": ""
+    },
+    "col_data7": {
+      "title": "职务",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data7",
+      "contactType": "unitPosition",
+      "value": "",
+      "step":{"target":"col_data9","value":"女"}
+    },
+    "col_data8": {
+      "title": "提交时间",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data8",
+      "value": "",
+      "step":{"target":"col_data9","value":"女"}
+    },
+    "col_data9": {
+      "title": "性别",
+      "type": "Radio",
+      "options": [
+        "男",
+        "女"
+      ],
+      "stepEnable":"1",
+      "col_data": "col_data9",
+      "value": ""
+    },
+    "createor": {
+      "title": "创建人",
+      "type": "Text",
+      "options": [],
+      "col_data": "creator",
+      "value": "",
+      "visual": "static",
+      "visiable":false,
+      "step":{"target":"col_data9","value":"男"}
+    },
+    "dateCreated": {
+      "title": "创建日期",
+      "type": "DataTimes",
+      "options": [],
+      "col_data": "dateCreated",
+      "value": "",
+      "visual": "static",
+      "step":{"target":"col_data9","value":"男"}
+    },
+    "dateUpdated": {
+      "title": "修改日期",
+      "type": "DataTimes",
+      "options": [],
+      "col_data": "dateUpdated",
+      "value": "",
+      "visual": "static"
+    },
+    "channel": {
+      "title": "渠道",
+      "type": "Radio",
+      "options": [
+        "微信",
+        "QQ",
+        "微博",
+        "其他"
+      ],
+      "col_data": "channel",
+      "value": "",
+      "visual": "static"
+    },
+    "systemEnvironment": {
+      "title": "途径",
+      "type": "Radio",
+      "options": [
+        "windows",
+        "android",
+        "mac",
+        "ios"
+      ],
+      "col_data": "systemEnvironment",
+      "value": "",
+      "visual": "static"
+    },
+    "remark": {
+      "title": "备注",
+      "type": "TextArea",
+      "options": [],
+      "col_data": "remark",
+      "placeholder": "",
+      "value": "",
+      "visual": "static"
+    }
+  },
+  "groupBy": [],
+  "orderBy": [],
+  "orderType": "desc",
+  "countBy": [],
+  "define_id": 170,
+  "companyCode": "3c1b8046-b6e5-11e8-a643-f0795939bee2",
+  "tableName": "project_define_data"
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="600"
+            timeToLiveSeconds="3600"
+            overflowToDisk="true"
+            diskPersistent="false"
+            diskSpoolBufferSizeMB="128"
+            maxElementsOnDisk="20000"
+            diskExpiryThreadIntervalSeconds="100"
+            memoryStoreEvictionPolicy="LFU"/>
+
+       <!-- 这里的 users 缓存空间是为了下面的 demo 做准备 -->
+    <cache name="optionsCache"  maxEntriesLocalHeap="100"
+           maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
+           diskSpoolBufferSizeMB="20" timeToIdleSeconds="600" timeToLiveSeconds="20"
+           memoryStoreEvictionPolicy="LFU" />
+</ehcache>

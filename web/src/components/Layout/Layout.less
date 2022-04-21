@@ -1,0 +1,333 @@
+@import "../../themes/vars.less";
+
+.layout {
+  background-color: #ffffff;
+  position: relative;
+  height: 100vh;
+
+  &.withnavbar {
+    /**没有展开sider情况下控制手机下的左边距**/
+    .main {
+      @media screen and (max-width:500px){
+        margin-left: 1em;
+      }
+      margin-left: 2.5em;
+    }
+  }
+
+  &.fold {
+    .sider {
+      width: 3em;
+      z-index: 99;
+      //margin-top:100px;
+      .logo {
+        img {
+          width: 28px;
+          margin: 6px 7px;
+        }
+      }
+
+      :global {
+        .ant-menu-root {
+          width: 100%;
+          overflow: visible;
+
+          & > .ant-menu-item {
+            padding: 0;
+            text-align: center;
+
+            .anticon {
+              font-size: 14px;
+              margin-right: 0;
+            }
+          }
+
+          & > .ant-menu-submenu {
+            & > .ant-menu-submenu-title {
+              padding: 0;
+              text-align: center;
+
+              .anticon {
+                font-size: 14px;
+                margin-right: 0;
+              }
+
+              &::after {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    /**没有展开sider情况下默认电脑端的左边距**/
+    .main {
+      margin-left: 3.5em;
+    }
+  }
+
+  .sider {
+    //width: 220px;
+    //width: 100px;
+    z-index: 99;
+    background: #fff;
+    position: absolute;
+    overflow: visible;
+    padding-bottom: 24px;
+    height: 100vh;
+    transition: @transition-ease-out;
+    box-shadow: @shadow-1;
+    color: #999;
+
+    &.light {
+      background: #fff;
+
+      .switchtheme {
+        background: #fff;
+        border-top: solid 1px #f8f8f8;
+      }
+    }
+
+    .logo {
+      text-align: center;
+      height: 40px;
+      line-height: 40px;
+      cursor: pointer;
+      margin: 28px 0;
+      transition: @transition-ease-out;
+      overflow: hidden;
+
+      img {
+        width: 40px;
+        margin-right: 8px;
+        transition: @transition-ease-out;
+      }
+
+      span {
+        vertical-align: text-bottom;
+        font-size: 16px;
+        text-transform: uppercase;
+        display: inline-block;
+      }
+
+      .anticon {
+        transition: @transition-ease-out;
+      }
+    }
+
+    .switchtheme {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      height: 48px;
+      background-color: @dark-half;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px 0 24px;
+      overflow: hidden;
+      z-index: 1000;
+
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      :global {
+        .anticon {
+          min-width: 14px;
+          margin-right: 8px;
+          font-size: 14px;
+        }
+      }
+    }
+
+    :global {
+      .ant-menu-dark,
+      .ant-menu-dark .ant-menu-sub {
+        color: #ffffff;
+      }
+
+      .ant-menu-root {
+        height: ~"calc(100vh - 144px)";
+        overflow-x: hidden;
+        border-right: none;
+
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+        }
+
+        &:hover {
+          &::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+          }
+        }
+
+        &.ant-menu-vertical {
+          .ant-menu-sub {
+            height: 0;
+            opacity: 0;
+            transition: none;
+          }
+          /** @liuqi **/
+           .ant-menu-item{
+             padding:0 0.6em;
+           }
+           .ant-menu-item .anticon{
+             margin-right: 1px;
+           }
+           .ant-menu-item > a{
+             text-align: center;
+           }
+
+          .ant-menu-submenu-active {
+            .ant-menu-sub {
+              height: auto;
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      .ant-menu {
+        transition: @transition-ease-out;
+
+        .ant-menu-item,
+        .ant-menu-submenu-title {
+          overflow: hidden;
+          white-space: normal;
+        }
+      }
+    }
+  }
+
+  .main {
+    @media screen and (max-width:500px){
+      margin-left: 1em;
+      padding-right:1em;
+    }
+    @media screen and (min-width:500px){
+      overflow: auto;
+    }
+    background-color: #fff;
+    margin-left: 224px;
+    height: 100vh;
+    transition: @transition-ease-out;
+    padding-right:10px;
+    :global {
+      .content-inner {
+        background: #fff;
+        padding-right: 5px;
+        padding-top: 0;
+        box-shadow: @shadow-1;
+        //min-height: e("calc(100vh - 184px)");
+        //height:auto;
+      }
+    }
+
+    .container {
+      top:40px;
+      height: auto;
+    }
+
+    .content {
+      min-height: e("calc(100vh - 184px)");
+      position: relative;
+    }
+  }
+
+  .menuFlod{
+    cursor: pointer;
+    background-color:#394263;
+    text-align:center;
+    line-height:35px;
+    color:#394263 !important;
+    &:hover {
+      color: #ffffff;
+      background-color:  #394263;
+    }
+  }
+}
+
+:global .ant-menu-dark {
+  color: #ffffff;
+  //background-color: #191616;
+
+  .ant-menu-submenu-title:hover,
+  .ant-menu-submenu:hover {
+    color: @primary-color;
+  }
+
+  .ant-menu-sub {
+    color: #ffffff;
+  }
+
+  .ant-menu-submenu-selected {
+    color: @primary-color;
+
+    &:not(.ant-menu-submenu-open) {
+      background-color: @dark-half;
+    }
+  }
+
+  .ant-menu-item,
+  .ant-menu-submenu-title {
+    & > a {
+      color: #999;
+    }
+
+    &:hover > a {
+      color: @primary-color;
+    }
+  }
+
+  &.ant-menu-inline {
+    .ant-menu-item-selected {
+      background-color: @dark-half;
+    }
+  }
+
+  .ant-menu-item-selected {
+    color: @primary-color;
+    background-color: @dark-half;
+
+    & > a {
+      color: @primary-color;
+    }
+
+    &:hover {
+      background-color: @dark-half;
+    }
+  }
+}
+
+.spin {
+  :global .ant-spin-container {
+    height: 100vh;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .layout {
+    .main {
+
+      .bread {
+        padding: 0 12px;
+      }
+
+      .content {
+        min-height: e("calc(100vh - 160px)");
+      }
+
+      :global {
+        .content-inner {
+          padding: 12px;
+          min-height: e("calc(100vh - 160px)");
+        }
+
+      }
+    }
+
+
+  }
+}

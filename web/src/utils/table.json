@@ -1,0 +1,65 @@
+{
+  "schema": {
+    "col_data1": {
+      "title": "城市",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data1",
+      "placeholder": ""
+    },
+    "col_data2": {
+      "title": "机构/小组名称",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data2",
+      "placeholder": ""
+    },
+    "col_data3": {
+      "title": "负责人",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data3",
+      "placeholder": ""
+    },
+    "col_data4": {
+      "title": "守望者人数",
+      "type": "FormNumber",
+      "options": [],
+      "col_data": "col_data4",
+      "placeholder": ""
+    },
+    "col_data5": {
+      "title": "守望河流条数",
+      "type": "FormNumber",
+      "options": [],
+      "col_data": "col_data5",
+      "placeholder": ""
+    },
+    "col_data6": {
+      "title": "守望河流里程",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data6",
+      "placeholder": ""
+    },
+    "col_data7": {
+      "title": "守望者名单",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data7",
+      "placeholder": ""
+    },
+    "col_data8": {
+      "title": "守望河流名单",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data8",
+      "placeholder": ""
+    }
+  },
+  "groupBy": [],
+  "tableName": "project_define_data",
+  "define_id": 66,
+  "companyCode": "3c1b8046-b6e5-11e8-a643-f0795939bee2",
+  "projectId":""
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script type="text/javascript" src="./Point.js"></script>
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.12&key=cf629ec22ff4167bb4aa47f3a9c8908e"></script>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" type="text/css">
+  <style>
+    #container {width:600px; height: 780px; }
+    html,body,#container{
+      height: 100%;
+      width:100%;
+    }
+    .input-item{
+      height: 2.2rem;
+    }
+    .btn{
+      width: 6rem;
+      margin: 0 1rem 0 2rem;
+    }
+    .input-text{
+      width: 4rem;
+      margin-right:1rem;
+    }
+  </style>
+</head>
+<body>
+<div id='container'></div>
+<div class="input-card" style='width: 24rem;'>
+  <div class="input-item">
+    <input type="radio" name='func' checked="" value='marker'><span class="input-text">画点</span>
+    <input type="radio" name='func' value='polyline'><span class="input-text">画折线</span>
+    <input type="radio" name='func' value='polygon'><span class="input-text" style='width:5rem;'>画多边形</span>
+  </div>
+  <div class="input-item">
+    <input id="clear" type="button" class="btn" value="清除" />
+    <input id="close" type="button" class="btn" value="关闭绘图" />
+  </div>
+</div>
+<script src="https://webapi.amap.com/maps?v=1.4.12&key=cf629ec22ff4167bb4aa47f3a9c8908e&plugin=AMap.MouseTool,AMap.PolyEditor"></script>
+<script type="text/javascript" src="./GaodeDraw.js"></script>
+<script type="text/javascript">
+  var gd=new GaodeDraw();
+  gd.init();
+</script>
+</body>
+<
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>绿邦公益数据</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0;">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <% if (htmlWebpackPlugin.options.production) { %>
+  <%= htmlWebpackPlugin.files.css.map((item) => {
+    return `<link href="${item}" rel="stylesheet">`
+  }) %>
+  <% } %>
+
+</head>
+</head>
+<body>
+<div id="xxxxxxxx"></div>
+<% if (htmlWebpackPlugin.options.production) { %>
+<%= htmlWebpackPlugin.files.js.map((item) => {
+  return `<script src="${item}" charset="utf-8"></script>`
+}) %>
+<% } %>
+
+</body>
+
+
+</html>

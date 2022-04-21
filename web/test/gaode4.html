@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript" src="./Point.js"></script>
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.12&key=cf629ec22ff4167bb4aa47f3a9c8908e"></script>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" type="text/css">
+  <style>
+    #container {width:600px; height: 780px; }
+    html,body,#container{
+      height: 100%;
+      width:100%;
+    }
+    .input-item{
+      height: 2.2rem;
+    }
+    .btn{
+      width: 6rem;
+      margin: 0 1rem 0 2rem;
+    }
+    .input-text{
+      width: 4rem;
+      margin-right:1rem;
+    }
+  </style>
+</head>
+<body>
+<div id='container'></div>
+<div class="input-card" style='width: 24rem;'>
+  <div class="input-item">
+    <input type="radio" name='func' checked="" value='marker'><span class="input-text">画点</span>
+    <input type="radio" name='func' value='polyline'><span class="input-text">画折线</span>
+    <input type="radio" name='func' value='polygon'><span class="input-text" style='width:5rem;'>画多边形</span>
+  </div>
+  <div class="input-item">
+    <input id="clear" type="button" class="btn" value="清除" />
+    <input id="close" type="button" class="btn" value="关闭绘图" />
+  </div>
+</div>
+<script src="https://webapi.amap.com/maps?v=1.4.12&key=cf629ec22ff4167bb4aa47f3a9c8908e&plugin=AMap.MouseTool,AMap.PolyEditor"></script>
+<script src="./ContextMenu.js"></script>
+<script type="text/javascript">
+  var lnglat = new AMap.LngLat(116.33719, 39.942384);
+
+  var map = new AMap.Map("container", {
+    center: lnglat,
+    zoom: 14,
+    resizeEnable: true
+  });
+
+  var imageLayer = new AMap.ImageLayer({
+    map: map,
+    url: 'http://www.hotelaah.com/big5/guangxi/images/dijishi.jpg',
+    bounds: new AMap.Bounds(
+      [116.327911, 39.939229],
+      [116.342659, 39.946275]
+    ),
+    opacity:'1',
+    zooms: [1, 18],
+    draggable: true,
+  });
+
+  //创建右键菜单
+  var contextMenu = new AMap.ContextMenu();
+
+  var currentMouseOnObj=null;//记录是当前编辑的覆盖物和当前被单击的覆盖物
+  var mouseTool = new AMap.MouseTool(map);
+  var polyEditor = null;//编辑器
+  //右键编辑
+  contextMenu.addItem("编辑", function () {
+    //如果是圆的话
+    console.log(currentMouseOnObj);
+    if(currentMouseOnObj&&(currentMouseOnObj.CLASS_NAME=="AMap.Polyline"||currentMouseOnObj.CLASS_NAME=="AMap.Polygon")){
+      polyEditor = new AMap.PolyEditor(map, currentMouseOnObj);
+      polyEditor.open();
+      //@liuqi 服务器更新
+    }
+  }, 0);
+  //右键删除
+  contextMenu.addItem("删除", function () {
+    //@liuqi 服务器更新
+    if(currentMouseOnObj){
+      deleteOverlay(currentMouseOnObj);
+    }
+  }, 1);
+  //右键保存
+  contextMenu.addItem("保存", function () {
+    polyEditor.close();
+    //@liuqi 服务器更新
+    if(currentMouseOnObj){
+      saveOverlay(currentMouseOnObj);
+    }
+  }, 2);
+  //右键保存
+  contextMenu.addItem("转换为多边形", function () {
+    console.log(currentMouseOnObj);
+    if(currentMouseOnObj && currentMouseOnObj.CLASS_NAME=="AMap.Polyline"){
+      var paths=currentMouseOnObj.getPath();
+      var polygon = new AMap.Polygon({
+        path: paths,
+        fillColor:'#00b0ff',
+        strokeColor:'#80d8ff',
+        draggable: true,
+      });
+      map.remove(currentMouseOnObj);
+      bindEvent(polygon);
+      map.add(polygon);
+
+    }
+  }, 3);
+
+  function deleteOverlay(overlay){
+    console.log("-------------deleteOverlay-----------");
+  }
+  function saveOverlay(overlay){
+    console.log("-------------saveOverlay-----------");
+    var drawingMode=overlay.CLASS_NAME=="AMap.Marker"?"marker":overlay.CLASS_NAME=="AMap.Polyline"?"polyline":"polygon";
+    var path=[];
+    if(overlay.CLASS_NAME=="AMap.Marker"){
+      var posi=overlay.getPosition;
+      path.push([posi.getLng(),posi.getLat()]);
+    }else{
+      var paths=overlay.getPath();
+      for(var i=0;i<paths.length;i++){
+        var posi=paths[i];
+        path.push([posi.getLng(),posi.getLat()]);
+      }
+    }
+    console.log(path);
+
+  }
+  function bindEvent(overlay){
+    overlay.on('rightclick', function (e) {
+      console.log("------rightclick------");
+      currentMouseOnObj=e.target;
+      contextMenu.open(map, e.lnglat);
+    });
+    overlay.on('click', function (e) {
+      currentMouseOnObj=e.target;
+    });
+    overlay.on('mouseout',function(e){
+
+    });
+    overlay.on('mouseover',function(e){
+      currentMouseOnObj=e.target;
+    });
+    overlay.on("dragend",function(e){
+      //marker,polygon,polyline
+      console.log("------drag end----------");
+      if(currentMouseOnObj){
+        saveOverlay(currentMouseOnObj);
+      }
+
+    });
+  }
+
+  function draw(type){
+    switch(type){
+      case 'marker':{
+        mouseTool.marker({
+          //同Marker的Option设置
+          draggable: true,
+        });
+        break;
+      }
+      case 'polyline':{
+        mouseTool.polyline({
+          strokeColor:'#80d8ff',
+          draggable: true,
+          //同Polyline的Option设置
+        });
+        break;
+      }
+      case 'polygon':{
+        mouseTool.polygon({
+          fillColor:'#00b0ff',
+          strokeColor:'#80d8ff',
+          draggable: true,
+          //同Polygon的Option设置
+        });
+        break;
+      }
+      case 'rectangle':{
+        mouseTool.rectangle({
+          fillColor:'#00b0ff',
+          strokeColor:'#80d8ff',
+          draggable: true,
+          //同Polygon的Option设置
+        });
+        break;
+      }
+      case 'circle':{
+        mouseTool.circle({
+          radius: 1500,
+          strokeColor: "#3366FF", //边框线颜色
+          strokeOpacity: 0.3,       //边框线透明度
+          strokeWeight: 3,        //边框线宽
+          fillColor: "#FFA500", //填充色
+          fillOpacity: 0.35,//填充透明度
+          draggable: true
+        });
+        break;
+      }
+    }
+  }
+  function converZoomPath(cnt,paths,method){
+    var center=new Point(cnt.x,cnt.y);//重心
+    var pList   = []  // 原始顶点坐标， 在initPList函数当中初始化赋值
+    var dpList  = [] // 边向量dpList［i＋1］－ dpLIst［i］ 在 initDPList函数当中计算后赋值
+    var ndpList = [] // 单位化的边向量， 在initNDPList函数当中计算后肤质，实际使用的时候，完全可以用dpList来保存他们
+    var newList = []  // 新的折线顶点，在compute函数当中，赋值
+    var dist=1*("-"==method?-1:1);
+
+    for(var i=0;i<paths.length;i++){
+      var pxl=(map.lngLatToContainer(paths[i]));
+      pList.push(new Point(pxl.x,pxl.y));
+    }
+
+    //初始化dpList  两顶点间向量差:计算dpList
+    for(var index=0; index<pList.length; ++index){
+      dpList.push(pList[index].sub(center));
+    }
+
+
+    //初始化ndpList，单位化两顶点向量差开始计算ndpList
+    for(var index=0;index<dpList.length; ++index) {
+      ndpList.push(dpList[index].mulNum( 1/Math.sqrt(dpList[index].dotMul(dpList[index]))));
+    }
+
+    //计算新顶点， 注意参数为负是向内收缩， 为正是向外扩张开始计算新顶点
+    let count = pList.length;
+    var sx=0.01;
+    for(var index=0; index<count; ++index){
+      var newx=pList[index].x*sx+center.x*(1-sx);
+      var newy=pList[index].y*sx+center.y*(1-sx);
+      var pixel = new AMap.Pixel(newx,newy);
+      var lnglat = map.containerToLngLat(pixel);
+      newList.push(lnglat);
+    }
+
+    console.log(newList);
+    return newList;
+  }
+
+  function closeTools(){
+    mouseTool.close()//关闭，并清除覆盖物
+    for(var i=0;i<radios.length;i+=1){
+      radios[i].checked = false;
+    }
+  }
+
+  /**-------------------
+   * 监听draw事件可获取画好的覆盖物
+   */
+  mouseTool.on('draw',function(e){
+
+    e.obj.setOptions?e.obj.setOptions({
+      map: this._map,
+      draggable: true
+    }):e.obj.setDraggable(true);
+    bindEvent(e.obj);
+    closeTools();
+  })
+
+  /**--------------
+   * 绑定绘画事件
+   */
+  var radios = document.getElementsByName('func');
+  for(var i=0;i<radios.length;i+=1){
+    radios[i].onchange = function(e){
+      draw(e.target.value)
+    }
+  }
+
+  /**---------------
+   * 监听放大缩小的快捷键
+   * @param event
+   */
+  var centerPoint=null;
+  document.onkeydown=function(event){
+
+    var e = event || window.event || arguments.callee.caller.arguments[0];
+    if(e.shiftKey  && e.keyCode==187){ // 按 +
+      ////进行变大计算
+      console.log("按了+号键");
+      console.log(currentMouseOnObj);
+      if(currentMouseOnObj &&currentMouseOnObj.CLASS_NAME=="AMap.Polygon"){
+        centerPoint=centerPoint?centerPoint:currentMouseOnObj.getBounds().getCenter( );
+        var centerPixel = map.lngLatToContainer(centerPoint);  // 获得 Pixel 对象
+        var paths=currentMouseOnObj.getPath();
+
+        var newPaths=converZoomPath(centerPixel,paths,'+');
+        currentMouseOnObj.setPath(newPaths);
+      }
+    }
+    if(e.shiftKey  && e.keyCode==189){ // 按 —
+      //缩小计算
+      console.log("按了-号键");
+      if(currentMouseOnObj){
+        //进行缩小计算
+        centerPoint=centerPoint?centerPoint:currentMouseOnObj.getBounds().getCenter( );
+        var centerPixel = map.lngLatToContainer(centerPoint);  // 获得 Pixel 对象
+        var paths=currentMouseOnObj.getPath();
+        var newPaths=converZoomPath(centerPixel,paths,'-');
+        currentMouseOnObj.setPath(newPaths);
+      }
+    }
+
+  };
+
+  /**--------------
+   * 清除所有覆盖物
+   */
+  document.getElementById('clear').onclick = function(){
+    map.clearMap();
+  }
+  /**--------------
+   * 绑定关闭事件
+   */
+  document.getElementById('close').onclick = closeTools;
+
+  //创建右键菜单
+  // var menu = new ContextMenu(map);
+
+</script>
+</body>
+<
+</html>

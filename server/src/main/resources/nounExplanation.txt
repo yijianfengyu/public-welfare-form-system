@@ -1,0 +1,30 @@
+数据库表
+product 产品（采购部门采购回来的产品）
+vendor  供应商（采购部门采购产品的提供商）
+vendor_contact 供应商联系人
+product_vp 采购订单（采购物品的总结单，如本次采购的付款情况等）
+product_vp_item 采购物品清单（采购的物品的详细情况，如数量、单价等信息）
+goods   商品（销售部门销售出去的商品）
+exchange 汇率
+
+
+option 下拉框选项
+menu   菜单（菜单之间的上下级关系）
+menu_rechord 菜单id记录
+menu_user 用户菜单
+role   角色
+role_list 角色清单
+staff  用户
+
+专业术语
+vendor 供应商
+contact 供应商联系人
+vendor po 采购订单
+goods 商品品名(菜单)
+product list 库存(采购的订单被业务审核后，需要生成库存)
+qty 数量
+piQty 预购数量(虚拟库存，需要买但是没付钱，不能扣正式库存)
+poQty 出售数量(已付款，可以扣正式库存)
+vpoQty 采购数量
+shippedQty 已发货之后剩余的库存数量(仓库剩余的数量)
+

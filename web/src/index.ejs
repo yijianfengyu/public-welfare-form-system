@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>公益数据平台</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0;">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <% if (htmlWebpackPlugin.options.production) { %>
+  <%= htmlWebpackPlugin.files.css.map((item) => {
+    return `<link href="${item}" rel="stylesheet">`
+  }) %>
+  <% } %>
+
+</head>
+<body>
+<div id="root"></div>
+<% if (htmlWebpackPlugin.options.production) { %>
+<%= htmlWebpackPlugin.files.js.map((item) => {
+  return `<script src="${item}" charset="utf-8"></script>`
+}) %>
+<% } %>
+<style type="text/css">
+  .BMapLib_Drawing_panel {
+    height: 47px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    float: left
+  }
+
+  .BMapLib_Drawing .BMapLib_box {
+    border-right: 1px solid #e5e5e5;
+    float: left;
+    height: 100%;
+    width: 64px;
+    height: 100%;
+    background-image: url(https://api.map.baidu.com/library/DrawingManager/1.4/src/bg_drawing_tool.png);
+    cursor: pointer
+  }
+
+  .BMapLib_Drawing .BMapLib_last {
+    border-right: 0
+  }
+
+  .BMapLib_Drawing .BMapLib_hander {
+    background-position: 0 0
+  }
+
+  .BMapLib_Drawing .BMapLib_hander_hover {
+    background-position: 0 -52px
+  }
+
+  .BMapLib_Drawing .BMapLib_marker {
+    background-position: -65px 0
+  }
+
+  .BMapLib_Drawing .BMapLib_marker_hover {
+    background-position: -65px -52px
+  }
+
+  .BMapLib_Drawing .BMapLib_circle {
+    background-position: -130px 0
+  }
+
+  .BMapLib_Drawing .BMapLib_circle_hover {
+    background-position: -130px -52px
+  }
+
+  .BMapLib_Drawing .BMapLib_polyline {
+    background-position: -195px 0
+  }
+
+  .BMapLib_Drawing .BMapLib_polyline_hover {
+    background-position: -195px -52px
+  }
+
+  .BMapLib_Drawing .BMapLib_polygon {
+    background-position: -260px 0
+  }
+
+  .BMapLib_Drawing .BMapLib_polygon_hover {
+    background-position: -260px -52px
+  }
+
+  .BMapLib_Drawing .BMapLib_rectangle {
+    background-position: -325px 0
+  }
+
+  .BMapLib_Drawing .BMapLib_rectangle_hover {
+    background-position: -325px -52px
+  }
+
+</style>
+</body>
+
+<!--加载鼠标绘制工具-->
+
+<!--<script type="text/javascript" src="http://pm.rwan.org.cn/pmapi/homePage/amapjs01"></script>
+<script type="text/javascript" src="http://pm.rwan.org.cn/pmapi/homePage/amapjs02"></script>
+<script type="text/javascript" src="http://pm.rwan.org.cn/pmapi/homePage/amapjs03"></script>
+<script type="text/javascript" src="http://pm.rwan.org.cn/pmapi/homePage/jsloadamapjs"></script>-->
+
+
+</html>

@@ -1,0 +1,6 @@
+FormLists.js列出自定义表的所有表单的定义数据table_define,
+FormDataList.js某个自定表单的数据
+shareData.js分享数据table的首页
+CreateFormModals.js创建表定义的第一个弹出窗口
+UpdateFormModals.js更新表定义的第一个弹出窗口，显示所有字段
+UpdateDefineModal.js更新表定义的第二个弹出窗口，编辑某字段的弹出窗口

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript" src="./Point.js"></script>
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.12&key=cf629ec22ff4167bb4aa47f3a9c8908e"></script>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" type="text/css">
+  <style>
+    #container {width:600px; height: 780px; }
+    html,body,#container{
+      height: 100%;
+      width:100%;
+    }
+    .input-item{
+      height: 2.2rem;
+    }
+    .btn{
+      width: 6rem;
+      margin: 0 1rem 0 2rem;
+    }
+    .input-text{
+      width: 4rem;
+      margin-right:1rem;
+    }
+  </style>
+</head>
+<body>
+<div id='container'></div>
+<div class="input-card" style='width: 24rem;'>
+  <div class="input-item">
+    <input type="radio" name='func' checked="" value='marker'><span class="input-text">画点</span>
+    <input type="radio" name='func' value='polyline'><span class="input-text">画折线</span>
+    <input type="radio" name='func' value='polygon'><span class="input-text" style='width:5rem;'>画多边形</span>
+  </div>
+  <div class="input-item">
+    <input type="radio" name='func' value='rectangle'><span class="input-text">画矩形</span>
+    <input type="radio" name='func' value='circle'><span class="input-text">画圆</span>
+  </div>
+  <div class="input-item">
+    <input id="clear" type="button" class="btn" value="清除" />
+    <input id="close" type="button" class="btn" value="关闭绘图" />
+  </div>
+</div>
+<script src="https://webapi.amap.com/maps?v=1.4.12&key=cf629ec22ff4167bb4aa47f3a9c8908e&plugin=AMap.MouseTool"></script>
+<script src="./ContextMenu.js"></script>
+<script type="text/javascript">
+  var lnglat = new AMap.LngLat(116.33719, 39.942384);
+
+  var map = new AMap.Map("container", {
+    center: lnglat,
+    zoom: 14,
+    resizeEnable: true
+  });
+
+  var imageLayer = new AMap.ImageLayer({
+    map: map,
+    url: 'http://www.hotelaah.com/big5/guangxi/images/dijishi.jpg',
+    bounds: new AMap.Bounds(
+      [116.327911, 39.939229],
+      [116.342659, 39.946275]
+    ),
+    opacity:'1',
+    zooms: [1, 18],
+    draggable: true,
+  });
+
+  //创建右键菜单
+  var contextMenu = new AMap.ContextMenu();
+  var rigthMouseOnObj=null;//记录是点了哪个覆盖物的右键
+  var currentMouseOnObj=null;//记录是当前编辑的覆盖物和当前被单击的覆盖物
+  //右键编辑
+  contextMenu.addItem("编辑", function () {
+    // map.zoomIn();
+    //如果是圆的话
+    console.log(rigthMouseOnObj);
+
+  }, 0);
+  //右键删除
+  contextMenu.addItem("删除", function () {
+    map.zoomOut();
+  }, 1);
+  //右键保存
+  contextMenu.addItem("保存", function () {
+    map.zoomOut();
+  }, 2);
+  //右键保存
+  contextMenu.addItem("转换为多边形", function () {
+    map.zoomOut();
+  }, 3);
+
+  var mouseTool = new AMap.MouseTool(map);
+  //监听draw事件可获取画好的覆盖物
+  var overlays = [];
+  mouseTool.on('draw',function(e){
+
+    e.obj.setOptions?e.obj.setOptions({
+      map: map,
+      draggable: true
+    }):e.obj.setDraggable(true);
+    overlays.push(e.obj);
+
+    e.obj.on('rightclick', function (e) {
+      console.log("------rightclick------");
+      console.log(e.target);
+      rigthMouseOnObj=e.target;
+      currentMouseOnObj=e.target;
+      contextMenu.open(map, e.lnglat);
+    });
+
+    e.obj.on('click', function (e) {
+      console.log("------click------");
+      console.log(e.target);
+      currentMouseOnObj=e.target;
+    });
+
+
+    e.obj.on('mouseout',function(e){
+      contextMenu.close();
+    });
+
+    if( e.obj.CLASS_NAME=="AMap.Polygon"){
+      console.log("------画了多边形------");
+      //如果是多边形则计算出中心点
+      var bounds=e.obj.getBounds();
+      console.log(bounds);
+      // 创建点打在中心位置
+      var marker = new AMap.Marker({
+        map: map,
+        draggable:true,
+        position: bounds.getCenter(),
+      });
+    }
+
+  })
+
+  function draw(type){
+    switch(type){
+      case 'marker':{
+        mouseTool.marker({
+          //同Marker的Option设置
+        });
+        break;
+      }
+      case 'polyline':{
+        mouseTool.polyline({
+          strokeColor:'#80d8ff',
+          draggable: true,
+          //同Polyline的Option设置
+        });
+        break;
+      }
+      case 'polygon':{
+        mouseTool.polygon({
+          fillColor:'#00b0ff',
+          strokeColor:'#80d8ff',
+          draggable: true,
+          //同Polygon的Option设置
+        });
+        break;
+      }
+      case 'rectangle':{
+        mouseTool.rectangle({
+          fillColor:'#00b0ff',
+          strokeColor:'#80d8ff',
+          draggable: true,
+          //同Polygon的Option设置
+        });
+        break;
+      }
+      case 'circle':{
+        mouseTool.circle({
+          radius: 1500,
+          strokeColor: "#3366FF", //边框线颜色
+          strokeOpacity: 0.3,       //边框线透明度
+          strokeWeight: 3,        //边框线宽
+          fillColor: "#FFA500", //填充色
+          fillOpacity: 0.35,//填充透明度
+          draggable: true
+        });
+        break;
+      }
+    }
+  }
+
+  var radios = document.getElementsByName('func');
+  for(var i=0;i<radios.length;i+=1){
+    radios[i].onchange = function(e){
+
+      draw(e.target.value)
+    }
+  }
+  draw('marker')
+  function onComplete(data){
+    console.log("------------"+data);
+  }
+  function onError(data){
+    console.log("------------"+data);
+  }
+
+  function converZoomPath(cnt,paths,method){
+    var center=map.lngLatToContainer(cnt);//重心
+    var pathPxl=[];
+    for(var i=0;i<paths.length;i++){
+
+      var pxl=(map.lngLatToContainer(paths[i]));
+      console.log("坐标："+pxl.x+"  :"+pxl.y);
+
+      var slope=(pxl.y-center.y)/(pxl.x-center.x);//斜率
+      console.log("斜率："+slope);
+      var xmid=Number(Math.pow(slope,2));
+      console.log(xmid);
+      var px=Math.sqrt(16/(1+Math.pow(slope,2)),2);
+      var py=Math.sqrt(16/(1+Math.pow(1/slope,2)),2);
+      console.log("增长x"+px+": y"+py);
+      var mid=method=="-"?-1:1;
+      var newX=pxl.x-center.x>0?pxl.x+px*mid:pxl.x-px*mid;
+      var newY=pxl.y-center.y>0?pxl.y+py*mid:pxl.y-py*mid;
+      var pixel = new AMap.Pixel(newX,newY);
+      var lnglat = map.containerToLngLat(pixel);  // 获得 LngLat 对象
+      pathPxl.push(lnglat);
+    }
+    console.log(pathPxl);
+    return pathPxl;
+  }
+
+  document.onkeydown=function(event){
+    var e = event || window.event || arguments.callee.caller.arguments[0];
+    //console.log("按组合键------"+e.shiftKey+"   "+e.keyCode);
+    if(e.shiftKey  && e.keyCode==187){ // 按 +
+      ////进行变大计算
+      console.log("按了+号键");
+      if(currentMouseOnObj &&currentMouseOnObj.CLASS_NAME=="AMap.Polygon"){
+        var centerPoint=currentMouseOnObj.getBounds().getCenter( );
+        console.log("-------"+centerPoint+"------");
+        var centerPixel = map.lngLatToContainer(centerPoint);  // 获得 Pixel 对象
+        console.log("-------"+centerPixel+"------");
+        var paths=currentMouseOnObj.getPath();
+        var newPaths=converZoomPath(centerPoint,paths,'+');
+        currentMouseOnObj.setPath(newPaths);
+      }
+    }
+    if(e.shiftKey  && e.keyCode==189){ // 按 —
+      //缩小计算
+      console.log("按了-号键");
+      if(currentMouseOnObj){
+        //进行缩小计算
+        var centerPoint=currentMouseOnObj.getBounds().getCenter( );
+        var paths=currentMouseOnObj.getPath();
+        var newPaths=converZoomPath(centerPoint,paths,'-');
+        currentMouseOnObj.setPath(newPaths);
+      }
+    }
+
+  };
+
+  document.getElementById('clear').onclick = function(){
+    map.remove(overlays)
+    overlays = [];
+  }
+  document.getElementById('close').onclick = function(){
+    mouseTool.close()//关闭，并清除覆盖物
+    for(var i=0;i<radios.length;i+=1){
+      radios[i].checked = false;
+    }
+  }
+
+  var p0m=new Point(1,1);
+  var p1m=new Point(11,1);
+  var p2m=new Point(1,11);
+
+  var p0=new Point(0,0);
+  var p1=p1m.sub(p0m);
+  var p2=p2m.sub(p0m);
+
+  var distance=10;//移动的距离
+  var length=10/Math.sin(p1.getRadian(p2));
+  console.log(p1);
+  console.log(p2);
+  console.log(length);
+  console.log(p1.getRadian(p2));
+  var newPoint=p0m.add(p1.add(p2).mulNum(length));
+  console.log(newPoint);
+  //创建右键菜单
+  // var menu = new ContextMenu(map);
+
+</script>
+</body>
+<
+</html>

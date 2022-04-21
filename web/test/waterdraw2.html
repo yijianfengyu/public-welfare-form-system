@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+    body, html{width: 100%;height: 100%;overflow: hidden;margin:0;}
+    #allmap {margin-right: 200px;height: 100%;overflow: hidden;}
+    #result {border-left:1px dotted #999;height:100%;width:200px;position:absolute;top:0px;right:0px;font-size:12px;}
+    dl,dt,dd,ul,li{
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+    p{font-size:12px;}
+    dt{
+      font-size:14px;
+      font-family:"微软雅黑";
+      font-weight:bold;
+      border-bottom:1px dotted #000;
+      padding:5px 0 5px 5px;
+      margin:5px 0;
+    }
+    dd{
+      padding:5px 0 0 5px;
+    }
+    li{
+      line-height:28px;
+    }
+  </style>
+
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=E4805d16520de693a3fe707cdc962045"></script>
+  <!--加载鼠标绘制工具-->
+  <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+  <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+  <!--加载检索信息窗口-->
+  <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
+  <script type="text/javascript" src="./json.js"></script>
+  <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
+  <title>鼠标绘制工具</title>
+</head>
+<body>
+<div id="allmap" style="overflow:hidden;zoom:1;position:relative;">
+  <div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
+</div>
+
+<div id="result">
+  <dl>
+
+    <dt>区域</dt>
+    <dd>
+      <ul>
+        <li>
+          <label>城市</label>
+          <select class="width-18"  id="csdict" onchange="getcs(this.value)">
+            <option value="">-请选择-</option>
+            <option value="北京市">北京市</option>
+            <option value="上海市">上海市</option>
+            <option value="合肥市">合肥市</option>
+          </select>
+        </li>
+      </ul>
+    </dd>
+    <dt>操作操作</dt>
+    <dd>
+      <ul>
+        <li>
+          <input type="button" value="清除所有覆盖物图形" onclick="clearAll()"/>
+          <input type="button" value="打印所有覆盖物图形" onclick="printAll()"/>
+          <input type="button" value="加载所有图形" onclick="loadMyOverlay()"/>
+          <input type="button" value="加载今日绘制图形" onclick="loadMyOverlay()"/>
+
+        </li>
+      </ul>
+    </dd>
+  </dl>
+
+</div>
+
+<script type="text/javascript">
+
+  // 百度地图API功能
+  var map = new BMap.Map('map');
+  var poi = new BMap.Point(116.307852,40.057031);
+  map.centerAndZoom(poi, 16);
+  map.enableScrollWheelZoom();
+
+
+  var overlays = [];//多边形对象缓存
+  var myOverlay = [];//默认图形，模拟从数据库加载，和上面的overlays相同{drawingModes:"",points:[[],[]]}
+
+
+  //1、双击完成绘制时回调获得覆盖物信息并缓存起来
+  var overlaycomplete = function(e){
+    //将多边形保存到数组
+    overlays.push(e.overlay);
+    myOverlay.push(e.overlay);
+    //开启编辑模式
+    //e.overlay.enableEditing();
+    //添加事件监听函数
+    e.overlay.addEventListener("lineupdate",function(e){
+      var bc=e.currentTarget;
+        console.log(bc.Ou);
+
+    }
+    );
+    //新创建的生成唯一键，如果点了邮件的保存就会进入数据库，如果并没有，则不会保存此覆盖物图形
+    e.overlay.guid=guid();
+    //创建右键菜单
+    bindRightMenu(e.overlay);
+  };
+
+  //2、打印所有覆盖物图形
+  function printAll(){
+    var map = this.map;
+    var overlays = this.overlays;//获取存放的多边形数组
+    for(var i=0;i<overlays.length;i++){
+      var path = overlays[i].getPath();//获取第一个多边形
+      console.log(overlays[i]);
+      var pathArr='';
+      for(var k=0;k<path.length;k++){
+        pathArr+="["+path[k].lng+","+path[k].lat+"]";
+      }
+      console.log("图形的["+i+"]标记点: "+pathArr);
+
+    }
+
+
+  }
+
+  //设置多边形样式对象
+  var styleOptions = {
+    strokeColor:"#2E8B57",    //边线颜色。
+    fillColor:"#388E8E",      //填充颜色。当参数为空时，圆形将没有填充效果。
+    strokeWeight: 2,       //边线的宽度，以像素为单位。
+    strokeOpacity: 0.8,    //边线透明度，取值范围0 - 1。
+    fillOpacity: 0.3,      //填充的透明度，取值范围0 - 1。
+    strokeStyle: 'solid' //边线的样式，solid或dashed。
+  }
+
+  //实例化鼠标绘制工具
+  var drawingManager = new BMapLib.DrawingManager(map, {
+
+    isOpen: false, //是否开启绘制模式
+    enableDrawingTool: true, //是否显示工具栏
+    drawingMode:BMAP_DRAWING_POLYGON,//绘制模式  多边形
+    drawingToolOptions: {
+      anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+      offset: new BMap.Size(5, 5), //偏离值
+      drawingModes:[
+        BMAP_DRAWING_POLYGON,//仅支持多边形
+        BMAP_DRAWING_POLYLINE//线
+      ]
+    },
+    polygonOptions: styleOptions, //设置多边形的样式
+    polylineOptions: styleOptions, //线的样式
+  });
+
+  //添加鼠标绘制工具监听事件，用于获取绘制结果
+  drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+
+
+  function $(id){
+    return document.getElementById(id);
+  }
+
+  //3、清除地图上所有覆盖物
+  function clearAll() {
+    //清楚界面上的图形覆盖物
+    for(var i = 0; i < overlays.length; i++){
+      map.removeOverlay(overlays[i]);
+    }
+    //清除缓存的图形覆盖物
+    overlays.length = 0 ;
+    //map.removeOverlay(this.myPolygon);
+    //this.myPolygon = '';
+  }
+
+
+  //4、删除指定多边形
+  var removeMarker = function(e,ee,marker){
+    console.log(marker);
+    map.removeOverlay(marker);//地图界面上删除图形
+    for (var i = 0; i < overlays.length; i++) {
+      if (overlays[i] == marker){
+        overlays.splice(i,1);//浏览器缓存的新增的删除
+        myOverlay.splice(i,1);//服务器后端的删除，如果有的话
+      }
+    }
+    //@数据库删除
+  }
+
+  //5、编辑多边形
+  var editMarker = function(e,ee,marker){
+    console.log(marker);
+    //开启编辑模式
+    marker.enableEditing();
+  }
+
+  //6、保存多边形
+  var saveMarker = function(e,ee,marker){
+    console.log(marker);
+    //关闭编辑模式
+    marker.disableEditing();
+    //@保存到数据库
+  }
+
+  //从数据加载多边形
+  function loadMyOverlay (){
+    var map = this.map;
+    //清空现在有的多边形
+    clearAll();
+    //map.centerAndZoom(this.poi, 11);
+    //var myPolygon = new BMap.Polygon(this.myOverlay, this.styleOptions);
+    //this.myPolygon = myPolygon;
+
+    //try{myPolygon.enableEditing();}catch(e){};
+    //myPolygon.addEventListener("lineupdate",function(e){
+    //});
+    for(var i=0;i<this.myOverlay.length;i++){
+      map.addOverlay( myOverlay[i]);
+      //将加载的多边形保存到数组里面
+      overlays.push(myOverlay[i]);
+      //创建右键菜单
+      bindRightMenu(myOverlay[i]);
+    }
+
+  }
+  //创建右键菜单
+  function bindRightMenu(overlay){
+    var markerMenu=new BMap.ContextMenu();
+    markerMenu.addItem(new BMap.MenuItem('删除',removeMarker.bind(overlay)));
+    markerMenu.addItem(new BMap.MenuItem('编辑',editMarker.bind(overlay)));
+    markerMenu.addItem(new BMap.MenuItem('保存',saveMarker.bind(overlay)));
+    overlay.addContextMenu(markerMenu);
+  }
+  //城市级别地图
+  function getcs(csdict){
+    this.map.centerAndZoom(csdict, 12);
+  }
+
+  function S4() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  };
+  // Generate a pseudo-GUID by concatenating random hexadecimal.
+  function guid() {
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  };
+
+</script>
+
+</body>
+</html>
+</script>
+

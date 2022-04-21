@@ -1,0 +1,138 @@
+@import '../../themes/vars.less';
+
+.header {
+  :global .ant-menu-horizontal {
+    & > .ant-menu-submenu {
+      float: right;
+    }
+    border: none;
+    display: inline-block;
+  }
+  width: 100%;
+  //box-shadow: @shadow-2;
+  border: 1px solid #CBCBCB;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  height: 47px;
+  background-color: #F2F4F6;
+  z-index: 999;
+  font-size:14px;
+  color:#394263 !important;
+
+  .rightWarpper {
+    display: flex;
+    padding-right: 16px;
+  }
+.spanColor{
+  color: #394263;
+}
+  .logoDiv{
+    border-left:1px solid #2a2f32;
+    width:120px;
+    float: left;
+    height: 47px;
+    line-height: 47px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: @transition-ease-in;
+    border-right:1px solid #2a2f32;
+    color:#ffffff;
+  }
+
+  .rightDiv{
+    border-left:1px solid #2a2f32;
+    width:90px;
+    height: 47px;
+    line-height: 47px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: @transition-ease-in;
+    border-right:1px solid #394263;
+    color:#ffffff;
+    line-height:47px;
+    &:hover {
+      color: #ffffff;
+      background-color:  #394263;
+    }
+  }
+
+  .rightLoginDiv{
+    float: right;
+    width:80px;
+    border-right:none;
+    height: 47px;
+    line-height: 47px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: @transition-ease-in;
+    color:#ffffff;
+    &:hover {
+      color: #F2F4F6;
+      background-color:  #394263;
+    }
+  }
+  .menuItem{
+    background-color: #394263;
+    &:hover {
+      color: #F2F4F6;
+      background-color:#00C1DE;
+    }
+  }
+  .button {
+    width: 47px;
+    height: 47px;
+    line-height: 47px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: @transition-ease-in;
+    border-right:1px solid #394263;
+    color:#ffffff;
+    &:hover {
+      color: #ffffff;
+      background-color:  #394263;
+    }
+  }
+
+  .logoImg{
+    float: left;
+    width:30px;
+    margin-left:10px;
+    margin-top:10px;
+  }
+
+  .roleMenu{
+      color:#ffffff;
+    &-item:hover:hover {
+      background-color: white;
+    }
+  }
+}
+
+.popovermenu {
+  width: 280px;
+  margin-left: 6px;
+
+  :global .ant-popover-inner-content {
+    padding: 0;
+
+    .ant-menu-inline .ant-menu-item,
+    .ant-menu-vertical .ant-menu-item {
+      border-right: 0;
+      height: 48px;
+      line-height: 48px;
+    }
+
+    .ant-menu-inline .ant-menu-item-selected,
+    .ant-menu-inline .ant-menu-selected {
+      border-right: 0;
+    }
+  }
+
+}

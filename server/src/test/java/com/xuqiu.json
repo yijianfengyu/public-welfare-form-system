@@ -1,0 +1,228 @@
+{
+  "schema": {
+    "col_data6": {
+      "title": "医院名称",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data6",
+      "placeholder": "请输入医院名称",
+      "outHiden": false,
+      "searchHiden": false,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data1": {
+      "title": "定点医院平均确诊量",
+      "type": "Number",
+      "options": [],
+      "col_data": "col_data1",
+      "placeholder": "请输入该地区定点医院平均确诊量（确诊人数/定点医院数量）",
+      "outHiden": true,
+      "searchHiden": true,
+      "orderHiden": false,
+      "value": ""
+    },
+    "col_data2": {
+      "title": "该地区平均死亡率",
+      "type": "FormPercentage",
+      "options": [],
+      "col_data": "col_data2",
+      "placeholder": "请输入该地区平均死亡率（死亡人数/确诊人数",
+      "outHiden": true,
+      "searchHiden": true,
+      "orderHiden": false,
+      "value": ""
+    },
+    "col_data4": {
+      "title": "省",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data4",
+      "placeholder": "请输入省",
+      "outHiden": false,
+      "searchHiden": true,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data5": {
+      "title": "城市",
+      "type": "Cascade",
+      "options": [],
+      "col_data": "col_data5",
+      "placeholder": "请输入城市",
+      "outHiden": false,
+      "searchHiden": false,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data3": {
+      "title": "定点医院",
+      "type": "Radio",
+      "options": [
+        "是",
+        "否"
+      ],
+      "col_data": "col_data3",
+      "placeholder": "请输入定点医院/发热门诊",
+      "outHiden": false,
+      "searchHiden": true,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data7": {
+      "title": "联系人",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data7",
+      "placeholder": "请输入联系人",
+      "outHiden": false,
+      "searchHiden": false,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data8": {
+      "title": "联系方式",
+      "type": "FormPhone",
+      "options": [],
+      "col_data": "col_data8",
+      "placeholder": "请输入联系方式",
+      "outHiden": false,
+      "searchHiden": true,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data9": {
+      "title": "需求清单",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data9",
+      "placeholder": "请输入需求清单",
+      "outHiden": false,
+      "searchHiden": false,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data10": {
+      "title": "需求日期",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data10",
+      "placeholder": "请输入日期",
+      "outHiden": false,
+      "searchHiden": true,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data11": {
+      "title": "其他说明",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data11",
+      "placeholder": "请输入其他说明",
+      "outHiden": false,
+      "searchHiden": false,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data12": {
+      "title": "收货地址",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data12",
+      "placeholder": "请输入收货地址",
+      "outHiden": false,
+      "searchHiden": false,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data13": {
+      "title": "医院官网求助链接",
+      "type": "Text",
+      "options": [],
+      "col_data": "col_data13",
+      "placeholder": "请输入医院官网求助链接",
+      "outHiden": false,
+      "searchHiden": true,
+      "orderHiden": true,
+      "value": ""
+    },
+    "col_data14": {
+      "title": "捐赠连接",
+      "type": "FormLink",
+      "options": [],
+      "col_data": "col_data14",
+      "placeholder": "点击我进行捐赠",
+      "outHiden": false,
+      "searchHiden": true,
+      "orderHiden": true,
+      "defaultLink": "https://pm.58dzy.com/pmapi/temp/dataShare?id=257&code=b124953d-45d5-11ea-b413-00163e06e151&url=https%3A%2F%2Fpm.58dzy.com&img=%E7%BB%BF%E9%82%A6%E7%BD%91%E7%BB%9C_20200203113820549.jpg",
+      "value": ""
+    },
+    "createor": {
+      "title": "创建人",
+      "type": "Text",
+      "options": [],
+      "col_data": "creatorName",
+      "value": "",
+      "visual": "static"
+    },
+    "dateCreated": {
+      "title": "创建日期",
+      "type": "DataTimes",
+      "options": [],
+      "col_data": "dateCreated",
+      "value": "",
+      "visual": "static"
+    },
+    "dateUpdated": {
+      "title": "修改日期",
+      "type": "DataTimes",
+      "options": [],
+      "col_data": "dateUpdated",
+      "value": "",
+      "visual": "static"
+    },
+    "channel": {
+      "title": "渠道",
+      "type": "Radio",
+      "options": [
+        "微信",
+        "QQ",
+        "微博",
+        "其他"
+      ],
+      "col_data": "channel",
+      "value": "",
+      "visual": "static"
+    },
+    "systemEnvironment": {
+      "title": "途径",
+      "type": "Radio",
+      "options": [
+        "windows",
+        "android",
+        "mac",
+        "ios"
+      ],
+      "col_data": "systemEnvironment",
+      "value": "",
+      "visual": "static"
+    },
+    "remark": {
+      "title": "备注",
+      "type": "TextArea",
+      "options": [],
+      "col_data": "remark",
+      "placeholder": "",
+      "value": "",
+      "visual": "static"
+    }
+  },
+  "groupBy": [],
+  "orderBy": [],
+  "orderType": "",
+  "countBy": [],
+  "tableName": "project_define_data",
+  "define_id": 266,
+  "companyCode": "b124953d-45d5-11ea-b413-00163e06e151"
+}
