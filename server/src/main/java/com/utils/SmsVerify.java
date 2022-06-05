@@ -14,13 +14,13 @@ public class SmsVerify {
      * 模板为验证码${code}，您正在注册成为${product}用户，感谢您的支持！
      */
     public static String sendCode(String code,String phone) {
-        IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAIVLTf1eLK9MWJ", "Ti9oFBqhbVXu3un5AnpR908SObVAAe");
+        IClientProfile profile = DefaultProfile.getProfile("", "", "");
         try {
-            DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", "Sms",  "sms.aliyuncs.com");
+            DefaultProfile.addEndpoint("", "", "",  "sms.aliyuncs.com");
             IAcsClient client = new DefaultAcsClient(profile);
             SingleSendSmsRequest request = new SingleSendSmsRequest();
             request.setSignName("注册验证");
-            request.setTemplateCode("SMS_25185419");
+            request.setTemplateCode("");
             request.setParamString("{\"code\":\""+code+"\",\"product\":\"项目管理系统\"}");
             request.setRecNum(phone);
             SingleSendSmsResponse httpResponse = client.getAcsResponse(request);
