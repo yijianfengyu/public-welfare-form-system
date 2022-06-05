@@ -91,7 +91,7 @@ module.exports = {
     pohtoUpload: `${APIV3}/auth/pohtoUpload`,
     projectUpload: `${APIV3}/pm/projectResourceUpload`,
     dingding:`${APIV3}/`,
-    projectResourceUrl:"http://pinqi-bucket.oss-cn-shenzhen.aliyuncs.com/",
+    projectResourceUrl:"",
     dlowdContactUpload:`${APIV3}/ContactUpload`,
     wx:`${APIV3}/openwx`,
     wxUpload:`${APIV3}/openwx/material/upload`,
